@@ -8,12 +8,15 @@ PI = np.pi
 DEFAULT = int(1e5)
 FS = 44100
 RATE = int(1e5)
+plt_index = 0
 
 
-# def gaussian(m=0, s=1, fs=DEFAULT, t=1, start=-4):
-#     num_samples = fs * t
-#     x = np.arange(start, -start, -2 * start / num_samples)
-#     return x, 1 / np.sqrt(2 * PI * s ** 2) * np.exp(-(x - m)**2 / (2 * s ** 2)), "X-axis", "Value"
+def show_and_save(plt):
+    global plt_index
+    plt.savefig(f"plot_{plt_index}.pdf")
+    plt_index += 1
+    plt.show()
+
 
 def saw(f, fs=DEFAULT, t=1, start=0):
     ts = 1 / fs
@@ -73,7 +76,7 @@ def _1():
     print("=================Ex1=================")
     plot_samples_subplots([sinusoid(2.5, 6), sinusoid(
         2.5, 6, func=np.cos, phi=-np.pi / 2)])
-    plt.show()
+    show_and_save(plt)
 
 
 def _2():
@@ -84,15 +87,17 @@ def _2():
     t4, s4, _, _ = sinusoid(1, 5, 1.5 * PI)
     plot_multiple_samples([t1, t2, t3, t4], [s1, s2, s3, s4],
                           ["0", "pi / 2", "pi", "3*pi/2"])
-    plt.show()
+    show_and_save(plt)
 
     SNR = [0.1, 1, 10, 100]
     z = np.random.normal(size=DEFAULT)
+    data_list = []
     for snr in SNR:
         gamma = np.sqrt(np.linalg.norm(s1) ** 2 /
                         (snr * np.linalg.norm(z) ** 2))
-        plot_samples(t1, s1 + gamma * z)
-        plt.show()
+        data_list.append([t1, s1 + gamma * z, "Time", "Value"])
+    plot_samples_subplots(data_list)
+    show_and_save(plt)
 
 
 def _3():
@@ -126,7 +131,7 @@ def _4():
     sum = [s1[0], s1[1] + s2[1], "Time", "Value"]
     plot_samples_subplots([s1, s2, sum])
 
-    plt.show()
+    show_and_save(plt)
 
 
 def _5():
@@ -146,7 +151,7 @@ def _6():
     b = sinusoid(A=1, f=50, fs=200)
     c = sinusoid(A=1, f=0, fs=200)
     plot_samples_subplots([a, b, c])
-    plt.show()
+    show_and_save(plt)
 
     # a arata ca zgomot
     # b are esantioane exact in varful "valurilor"
@@ -160,7 +165,7 @@ def _7():
     s3 = [s1[0][1::4], s1[1][1::4], s1[2], s1[3]]
 
     plot_samples_subplots([s1, s2, s3])
-    plt.show()
+    show_and_save(plt)
 
     # In s1 prindem mai multe detalii; in s2, fiind mai putine sample-uri, avem mai putine detalii despre sinusoida
     # In s3 esantionam din s1 punctele imediat urmatoare fiecarui punct esantionat in s2
@@ -183,6 +188,7 @@ def _8():
         (alpha, sin_pade, "alpha", "Pade approx")
     ]
     plot_samples_subplots(data_curves)
+    show_and_save(plt)
 
     # Plot errors on log scale
     plt.figure(figsize=(10, 5))
@@ -194,7 +200,7 @@ def _8():
     plt.title("Approximation Errors")
     plt.legend()
     plt.grid(True, which='both')
-    plt.show()
+    show_and_save(plt)
 
 
 _1()

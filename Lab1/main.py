@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+plot_index = 0
+
 
 def x(t): return np.cos(520 * np.pi * t + np.pi / 3)
 def y(t): return np.cos(280 * np.pi * t - np.pi / 3)
@@ -18,8 +20,8 @@ def sqr(t, f, phi=0):
     return np.sign(s(t, f, phi))
 
 
-# Funcție de plotare
 def plot_signal(f, fs, phi=0, start=0, end=1, max_s=50, sig_type="sin"):
+    global plot_index
     t = np.arange(start, end, 1/fs)
 
     if sig_type == "sin":
@@ -32,10 +34,13 @@ def plot_signal(f, fs, phi=0, start=0, end=1, max_s=50, sig_type="sin"):
     plt.suptitle(f"{sig_type.capitalize()} wave")
     plt.plot(t[:max_s], y[:max_s],)
     plt.grid(True)
+    plt.savefig(f"plot_{plot_index}.pdf")
+    plot_index += 1
     plt.show()
 
 
 def plot_sinusoids():
+    global plot_index
     ax_time = np.arange(0, 0.03 + 0.0005, 0.0005)
     fig, axs = plt.subplots(3)
     fig.suptitle("Sinusoidale")
@@ -43,39 +48,49 @@ def plot_sinusoids():
     axs[1].plot(ax_time, y(ax_time))
     axs[2].plot(ax_time, z(ax_time))
 
-    fig.show()
+    fig.savefig(f"plot_{plot_index}.pdf")
+    plot_index += 1
+    plt.show()
 
 
 def plot_sampling():
+    global plot_index
     ax_time = np.arange(0, 0.03, 1 / 200)
-    fig, axs = plt.subplots(3)
-    fig.suptitle("Sinusoidale esantionate")
     fig, axs = plt.subplots(3, 1, figsize=(8, 6))
+    fig.suptitle("Sinusoidale esantionate")
 
     axs[0].stem(ax_time, x(ax_time))
     axs[1].stem(ax_time, y(ax_time))
     axs[2].stem(ax_time, z(ax_time))
 
-    fig.show()
+    fig.savefig(f"plot_{plot_index}.pdf")
+    plot_index += 1
+    plt.show()
 
 
 def _2e():
+    global plot_index
     x, y = 128, 128
     I = np.random.rand(x, y)
     plt.imshow(I)
+    plt.savefig(f"plot_{plot_index}.pdf")
+    plot_index += 1
     plt.show()
 
 
 def _2f():
+    global plot_index
     x, y = 128, 128
     I = np.arange(x * y).reshape(x, y)
     I = np.tan(I)
     plt.imshow(I)
+    plt.savefig(f"plot_{plot_index}.pdf")
+    plot_index += 1
     plt.show()
 
 
-# plot_sinusoids()
-# plot_sampling()
+plot_sinusoids()
+plot_sampling()
 
 
 # 2 a
