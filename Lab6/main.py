@@ -175,7 +175,7 @@ def _4():
     X = np.fft.fft(x)
     Y = np.fft.fft(y)
 
-    f1 = np.fft.ifft(X * Y)
+    f1 = np.fft.ifft(np.matrix(X).H * Y)
     d1 = int(np.argmax(np.abs(f1)))
 
     eps = 1e-12
@@ -192,7 +192,6 @@ def _5():
     A = 1
     phi = 0
 
-    # generam exact Nw puncte
     t, x, l1, l2 = sinusoid(A, f, phi=phi, fs=Nw, t=1)
 
     rect_window = np.ones(Nw)
