@@ -92,7 +92,8 @@ plot_samples(freq_axis, X, "Frequency (Hz)",
 show_and_save()
 
 print(f"Frecventa de esantionare este 1 / 3600 = {fs} Hz")
-print(f"Intervalul de timp acopera {N / 24} zile, {N / 24 / 12} luni, aproximativ {N / 24 / 365} ani")
+print(f"Intervalul de timp acopera {
+      N / 24} zile, {N / 24 / 12} luni, aproximativ {N / 24 / 365} ani")
 print(f"Frecventa maxima prezenta in semnal este: {fs / 2} Hz")
 
 X_complete = np.copy(X_orig)
@@ -108,8 +109,9 @@ NFD = 10
 top4_idx = np.argpartition(X, -NFD)[-NFD:]
 top4_idx_sorted = top4_idx[np.argsort(X[top4_idx])[::-1]]
 
-print(f"Top {NFD} cele mai principale frecvente (prima este 0 adica media, si inca {NFD - 1} apoi): {freq_axis[top4_idx_sorted]}")
-aux = 1 / freq_axis[top4_idx_sorted[1:]] / 3600 / 24 # Hz -> D
+print(f"Top {NFD} cele mai principale frecvente (prima este 0 adica media, si inca {
+      NFD - 1} apoi): {freq_axis[top4_idx_sorted]}")
+aux = 1 / freq_axis[top4_idx_sorted[1:]] / 3600 / 24  # Hz -> D
 np.set_printoptions(suppress=True)
 print(f"Perioadele in zile, fara f = 0: {aux}")
 
@@ -121,7 +123,8 @@ k = (1000 - 48) // (7 * 24) + 10
 start = 7 * 24 * k + 48
 period = 24 * 30
 
-plot_samples(time_axis[start:start+period], x[start:start+period], "Time (days since beginning)", "Number of Cars")
+plot_samples(time_axis[start:start+period], x[start:start+period],
+             "Time (days since beginning)", "Number of Cars")
 show_and_save()
 
 # Frecventa cea mai mare din top 10 frecvente (inclusiv media)
@@ -130,11 +133,11 @@ idx = np.searchsorted(freq_axis, threshold)
 
 # Elimin frecventele aflate dupa threshold
 # Adica, frecventele care cu siguranta nu se aflta in top 10 cele mai influente frecvente
-X_filter = np.concatenate([X_orig[:idx], np.zeros_like(X_orig[idx:N-idx]), X_orig[N-idx:]])
+X_filter = np.concatenate(
+    [X_orig[:idx], np.zeros_like(X_orig[idx:N-idx]), X_orig[N-idx:]])
 x_filter = np.fft.ifft(X_filter)
 
 plot_samples_subplots([[time_axis, x, "Time (days since beginning)", "Number of Cars"],
                        [time_axis, x_filter, "Time (days since beginning)", "Number of Cars"]],
                       titles=["Original Signal", "Filtered signal"])
 show_and_save()
-

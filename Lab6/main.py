@@ -81,7 +81,7 @@ def _1():
     end = 3
     x = np.sinc(B * np.linspace(start=start, stop=end,
                 endpoint=True, num=DEFAULT)) ** 2
-    sigma = .00001
+    eps = .00001
     Fs = [1, 1.5, 2, 4]
 
     fig, axs = plt.subplots(2, 2, figsize=(12, 10))
@@ -91,16 +91,16 @@ def _1():
 
     for i, fs in enumerate(Fs):
         ts = 1 / fs
-        s1 = np.sinc(B * np.arange(start=0, stop=-3 - sigma, step=-ts)) ** 2
-        s2 = np.sinc(B * np.arange(start=0, stop=3 + sigma, step=ts)) ** 2
+        s1 = np.sinc(B * np.arange(start=0, stop=-3 - eps, step=-ts)) ** 2
+        s2 = np.sinc(B * np.arange(start=0, stop=3 + eps, step=ts)) ** 2
         s = np.concatenate([s1[::-1], s2[1:]])
         x_r = [0] * DEFAULT
 
         t_reconstruct = np.linspace(start, end, DEFAULT)
         x_r = np.zeros(DEFAULT)
 
-        t_s1 = np.arange(start=0, stop=-3 - sigma, step=-ts)
-        t_s2 = np.arange(start=0, stop=3 + sigma, step=ts)
+        t_s1 = np.arange(start=0, stop=-3 - eps, step=-ts)
+        t_s2 = np.arange(start=0, stop=3 + eps, step=ts)
         t_samples = np.concatenate([t_s1[::-1], t_s2[1:]])
 
         for t in range(len(t_reconstruct)):
@@ -115,8 +115,8 @@ def _1():
         ax.plot(t_plot, x_r, color='green',
                 linestyle='--', label='Reconstructed')
 
-        t_s1 = np.arange(start=0, stop=-3 - sigma, step=-ts)
-        t_s2 = np.arange(start=0, stop=3 + sigma, step=ts)
+        t_s1 = np.arange(start=0, stop=-3 - eps, step=-ts)
+        t_s2 = np.arange(start=0, stop=3 + eps, step=ts)
         t_s = np.concatenate([t_s1[::-1], t_s2[1:]])
 
         markerline, stemlines, baseline = ax.stem(t_s, s, basefmt=" ")
