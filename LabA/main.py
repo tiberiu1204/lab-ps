@@ -220,9 +220,15 @@ def _4():
 
 
 def _5():
-    roots_ar = get_roots(x_ar)
-    roots_greedy = get_roots(x_greedy)
-    roots_l1 = get_roots(x_l1)
+    def prepare(x):
+        x = np.asarray(x).ravel()
+        x = np.append(x, -1)
+        x /= x[0]
+        return x
+
+    roots_ar = get_roots(prepare(x_ar))
+    roots_greedy = get_roots(prepare(x_greedy))
+    roots_l1 = get_roots(prepare(x_l1))
 
     def is_stationary(roots):
         return "stationar" if np.all(np.abs(roots) > 1) else "nestationar"
@@ -239,12 +245,15 @@ def _5():
 
     for i, (roots, title) in enumerate(root_sets, 1):
         ax = plt.subplot(3, 1, i)
-        # Crează un cerc nou pentru fiecare subplot
-        unit_circle = plt.Circle(
-            (0, 0), 1, color='black', fill=False, linewidth=1)
+        unit_circle = plt.Circle((0, 0), 1, color='black', fill=False, linewidth=1)
         ax.add_artist(unit_circle)
-
-        ax.scatter(roots.real, roots.imag, color='red', marker='o', s=5)
+    
+        inside = np.abs(roots) <= 1
+        outside = np.abs(roots) > 1
+    
+        ax.scatter(roots[outside].real, roots[outside].imag, color='red', marker='o', s=5, label='|z| > 1')
+        ax.scatter(roots[inside].real, roots[inside].imag, color='blue', marker='o', s=5, label='|z| ≤ 1')
+    
         ax.set_xlim(-1.5, 1.5)
         ax.set_ylim(-1.5, 1.5)
         ax.set_aspect('equal', 'box')
@@ -254,6 +263,7 @@ def _5():
         ax.set_xlabel("Real")
         ax.set_ylabel("Imag")
         ax.grid(alpha=0.3)
+        ax.legend()
 
     plt.tight_layout()
     show_and_save()
