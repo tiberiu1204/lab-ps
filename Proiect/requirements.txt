@@ -1,0 +1,8 @@
+numpy
+scipy
+matplotlib
+soundfile
+scikit-learn
+requests
+joblib
+tqdm
